@@ -1,6 +1,6 @@
 package com.takhir.animetitlesjava.requests;
 
-import com.takhir.animetitlesjava.requests.responses.AnimeResponse;
+import com.takhir.animetitlesjava.requests.responses.AnimeGenresResponse;
 import com.takhir.animetitlesjava.requests.responses.AnimeSearchResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -15,6 +15,6 @@ public interface AnimeAPI {
             @Query("page[offset]") int pageOffset
     );
 
-    @GET("anime/{id}")
-    Call<AnimeResponse> getAnime(@Path("id") int id);
+    @GET("anime/{id}/genres")
+    Call<AnimeGenresResponse> getAnimeGenresById(@Path("id") int id);
 }

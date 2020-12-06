@@ -5,6 +5,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import com.takhir.animetitlesjava.util.HorizontalDottedProgress;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -20,6 +21,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     void showProgressBar(boolean visible) {
-        mProgressBar.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+        mProgressBar.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 }

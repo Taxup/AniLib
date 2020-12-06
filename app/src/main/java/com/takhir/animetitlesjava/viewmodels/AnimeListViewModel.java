@@ -1,9 +1,9 @@
 package com.takhir.animetitlesjava.viewmodels;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.takhir.animetitlesjava.models.kitsu.KitsuAnime;
-import com.takhir.animetitlesjava.models.shikimori.ShikimoriAnime;
+import com.takhir.animetitlesjava.models.kitsu.Anime;
 import com.takhir.animetitlesjava.repositories.AnimeRepository;
 
 import java.util.List;
@@ -25,8 +25,12 @@ public class AnimeListViewModel extends ViewModel {
         this.mPerformingQuery = mPerformingQuery;
     }
 
-    public LiveData<List<KitsuAnime>> getAnimeList() {
+    public LiveData<List<Anime>> getAnimeList() {
         return mAnimeRepository.getAnimeList();
+    }
+
+    public MutableLiveData<Boolean> isQueryExhausted() {
+        return mAnimeRepository.isQueryExhausted();
     }
 
     public void searchAnimeListApi(String text, int pageLimit, int pageOffset) {
@@ -44,7 +48,7 @@ public class AnimeListViewModel extends ViewModel {
     }
 
     public void searchNextPage() {
-        if (!mPerformingQuery) {
+        if (!mPerformingQuery && !isQueryExhausted().getValue()) {
             mAnimeRepository.searchNextPage();
         }
     }

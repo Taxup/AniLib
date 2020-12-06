@@ -2,7 +2,7 @@ package com.takhir.animetitlesjava.requests.responses;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.takhir.animetitlesjava.models.kitsu.KitsuAnime;
+import com.takhir.animetitlesjava.models.kitsu.Anime;
 import com.takhir.animetitlesjava.models.kitsu.Links;
 
 import java.util.List;
@@ -10,13 +10,13 @@ import java.util.List;
 public class AnimeSearchResponse {
     @SerializedName("data")
     @Expose
-    private List<KitsuAnime> anime;
+    private List<Anime> anime;
 
     @SerializedName("links")
     @Expose
     private Links links;
 
-    public List<KitsuAnime> getAnime() {
+    public List<Anime> getAnime() {
         return anime;
     }
 

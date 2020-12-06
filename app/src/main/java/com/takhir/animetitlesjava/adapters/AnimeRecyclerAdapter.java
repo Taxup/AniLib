@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.takhir.animetitlesjava.R;
-import com.takhir.animetitlesjava.models.kitsu.KitsuAnime;
-import com.takhir.animetitlesjava.models.shikimori.ShikimoriAnime;
-import com.takhir.animetitlesjava.util.Constants;
+import com.takhir.animetitlesjava.models.kitsu.Anime;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -19,8 +17,9 @@ import java.util.List;
 public class AnimeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int ANIME_TYPE = 1;
     public static final int LOADING_TYPE = 2;
+    public static final int EXHAUSTED_TYPE = 3;
 
-        private List<KitsuAnime> mAnimeList;
+    private List<Anime> mAnimeList;
     private final OnAnimeListener mOnAnimeListener;
 
     public AnimeRecyclerAdapter(OnAnimeListener mOnAnimeListener) {
@@ -34,6 +33,10 @@ public class AnimeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
             case ANIME_TYPE: {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_anime_list_item, parent, false);
                 return new AnimeViewHolder(view, mOnAnimeListener);
+            }
+            case EXHAUSTED_TYPE: {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_query_exhausted_list_item, parent, false);
+                return new SearchExhaustedViewHolder(view);
             }
             case LOADING_TYPE:
             default: {
@@ -67,10 +70,33 @@ public class AnimeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     public int getItemViewType(int position) {
         if (mAnimeList.get(position).getId() == -1) {
             return LOADING_TYPE;
-        } else if (position == mAnimeList.size() - 1 && position != 0) {
+        } else if (mAnimeList.get(position).getId() == -2) {
+            return EXHAUSTED_TYPE;
+        } else if (position == mAnimeList.size() - 1
+                && position != 0
+                && mAnimeList.get(position).getId() != -2) {
             return LOADING_TYPE;
         } else {
             return ANIME_TYPE;
+        }
+    }
+
+    public void setQueryExhausted() {
+        hideLoading();
+        Anime exhaustedAnime = new Anime();
+        exhaustedAnime.setId(-2);
+        mAnimeList.add(exhaustedAnime);
+        notifyDataSetChanged();
+    }
+
+    private void hideLoading() {
+        if (isLoading()) {
+            for (Anime anime : mAnimeList) {
+                if (anime.getId() == -1) {
+                    mAnimeList.remove(anime);
+                }
+            }
+            notifyDataSetChanged();
         }
     }
 
@@ -80,9 +106,9 @@ public class AnimeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public void displayLoading() {
         if (!isLoading()) {
-            KitsuAnime anime = new KitsuAnime();
+            Anime anime = new Anime();
             anime.setId(-1);
-            List<KitsuAnime> list = new ArrayList<>();
+            List<Anime> list = new ArrayList<>();
             list.add(anime);
             mAnimeList = list;
             notifyDataSetChanged();
@@ -106,9 +132,18 @@ public class AnimeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
         return 0;
     }
 
-    public void setAnimeList(List<KitsuAnime> animeList) {
+    public void setAnimeList(List<Anime> animeList) {
         mAnimeList = animeList;
         notifyDataSetChanged();
+    }
+
+    public Anime getSelectedAnime(int position) {
+        if (mAnimeList != null) {
+            if (mAnimeList.size() > 0) {
+                return mAnimeList.get(position);
+            }
+        }
+        return null;
     }
 
 }

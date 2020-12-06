@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/parent"
+        android:visibility="gone">
+
+    <com.google.android.material.circularreveal.CircularRevealRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="match_parent"
+                android:layout_height="330dp"
+                android:id="@+id/anime_image_background"
+                android:alpha="0.5"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="210dp"
+                android:layout_height="300dp"
+                android:layout_marginTop="30dp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/anime_image"/>
+
+        <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/anime_title"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:textSize="18sp"
+                android:maxLines="2"
+                android:textAlignment="center"
+                android:ellipsize="end"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/anime_image"/>
+
+        <com.google.android.material.circularreveal.CircularRevealLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/anime_title"
+                android:id="@+id/container"
+                android:padding="16dp"
+                android:paddingBottom="0dp"
+                android:orientation="vertical">
+
+        </com.google.android.material.circularreveal.CircularRevealLinearLayout>
+
+        <com.google.android.material.circularreveal.CircularRevealLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/container"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:id="@+id/anime_description_container"
+                android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/anime_description"
+                    android:maxLines="5"
+                    android:ellipsize="end"/>
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/anime_description"
+                    android:layout_gravity="center"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorAccent"
+                    android:id="@+id/anime_description_more"/>
+
+        </com.google.android.material.circularreveal.CircularRevealLinearLayout>
+
+        <com.google.android.material.circularreveal.CircularRevealLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/anime_description_container"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:id="@+id/anime_container_rating">
+
+            <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/anime_rating"
+                    android:textSize="56sp"/>
+
+            <!--                add new rating things-->
+
+            <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?attr/ratingBarStyleSmall"
+                    android:id="@+id/anime_rating_bar"
+            />
+
+        </com.google.android.material.circularreveal.CircularRevealLinearLayout>
+
+
+    </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
+
+</ScrollView>

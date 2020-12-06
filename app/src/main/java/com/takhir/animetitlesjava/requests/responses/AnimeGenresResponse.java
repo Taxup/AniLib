@@ -3,21 +3,23 @@ package com.takhir.animetitlesjava.requests.responses;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.takhir.animetitlesjava.models.kitsu.KitsuAnime;
+import com.takhir.animetitlesjava.models.kitsu.Genres;
 
-public class AnimeResponse {
+import java.util.List;
+
+public class AnimeGenresResponse {
     @SerializedName("data")
     @Expose
-    private KitsuAnime anime;
+    private List<Genres> genres;
 
-    public KitsuAnime getAnime() {
-        return anime;
+    public List<Genres> getGenres() {
+        return genres;
     }
 
     @Override
     public String toString() {
         return "AnimeResponse{" +
-                "anime=" + anime +
+                "genres=" + genres +
                 '}';
     }
 }

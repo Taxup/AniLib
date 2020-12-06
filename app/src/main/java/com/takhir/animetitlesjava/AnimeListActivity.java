@@ -1,6 +1,8 @@
 package com.takhir.animetitlesjava;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
@@ -10,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.takhir.animetitlesjava.adapters.AnimeRecyclerAdapter;
 import com.takhir.animetitlesjava.adapters.OnAnimeListener;
-import com.takhir.animetitlesjava.models.kitsu.KitsuAnime;
+import com.takhir.animetitlesjava.models.kitsu.Anime;
 import com.takhir.animetitlesjava.util.Testing;
 import com.takhir.animetitlesjava.viewmodels.AnimeListViewModel;
 
@@ -42,19 +44,28 @@ public class AnimeListActivity extends BaseActivity implements OnAnimeListener {
         initRecyclerView();
         subscribeObservers();
 
-        mAnimeListViewModel.searchAnimeListApi("cowboy bebop", 10, 1);
+        mAnimeListViewModel.searchAnimeListApi("cowboy bebop", 20, 1);
         mAdapter.displayLoading();
         initSearchView();
     }
 
     private void subscribeObservers() {
-        mAnimeListViewModel.getAnimeList().observe(this, new Observer<List<KitsuAnime>>() {
+        mAnimeListViewModel.getAnimeList().observe(this, new Observer<List<Anime>>() {
             @Override
-            public void onChanged(List<KitsuAnime> animeList) {
+            public void onChanged(List<Anime> animeList) {
                 if (animeList != null) {
                     Testing.printAnimeList(animeList, "print animeList");
                     mAnimeListViewModel.setPerformingQuery(false);
                     mAdapter.setAnimeList(animeList);
+                }
+            }
+        });
+        mAnimeListViewModel.isQueryExhausted().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    Log.d(TAG, "onChanged: the query is exhausted");
+                    mAdapter.setQueryExhausted();
                 }
             }
         });
@@ -67,8 +78,8 @@ public class AnimeListActivity extends BaseActivity implements OnAnimeListener {
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                if (!mRecyclerView.canScrollVertically(0)) {
-//                    mAnimeListViewModel.searchNextPage();
+                if (!mRecyclerView.canScrollVertically(1)) {
+                    mAnimeListViewModel.searchNextPage();
                 }
             }
         });
@@ -79,7 +90,7 @@ public class AnimeListActivity extends BaseActivity implements OnAnimeListener {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 mAdapter.displayLoading();
-                mAnimeListViewModel.searchAnimeListApi(query, 10, 1);
+                mAnimeListViewModel.searchAnimeListApi(query, 20, 0);
                 mSearchView.clearFocus();
                 return false;
             }
@@ -95,7 +106,11 @@ public class AnimeListActivity extends BaseActivity implements OnAnimeListener {
 
     @Override
     public void onAnimeClick(int position) {
-
+        Intent intent = new Intent(this, AnimeActivity.class);
+        Anime anime = mAdapter.getSelectedAnime(position);
+        Log.d(TAG, "onAnimeClick: -----" + anime);
+        intent.putExtra("anime", anime);
+        startActivity(intent);
     }
 
     @Override
