@@ -3,12 +3,15 @@ package com.takhir.animetitlesjava.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.takhir.animetitlesjava.R;
 import com.takhir.animetitlesjava.models.kitsu.Anime;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

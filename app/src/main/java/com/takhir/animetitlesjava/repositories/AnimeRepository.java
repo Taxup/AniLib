@@ -39,9 +39,9 @@ public class AnimeRepository {
         mAnimeList.addSource(animeListApiSource, new Observer<List<Anime>>() {
             @Override
             public void onChanged(List<Anime> animeList) {
+                doneQuery(animeList);
                 if (animeList != null) {
                     mAnimeList.setValue(animeList);
-                    doneQuery(animeList);
                 } else {
                     //search database cache
                 }
@@ -75,9 +75,12 @@ public class AnimeRepository {
         return mAnimeApiClient.isGenresRequestTimedOut();
     }
 
-    public void searchAnimeListApi(String text, int pageLimit, int pageOffset) {
+    public void searchAnimeListApi(String text, int pageLimit, int pageOffset, boolean isNewSearch) {
         mIsQueryExhausted.setValue(false);
-        mAnimeApiClient.searchAnimeListApi(text, pageLimit, pageOffset);
+        mAnimeApiClient.searchAnimeListApi(text, pageLimit, pageOffset, isNewSearch);
+        mPageLimit = pageLimit;
+        mPageOffset = pageOffset;
+        mQuery = text;
     }
 
     public void searchAnimeGenresById(int id) {
@@ -86,7 +89,7 @@ public class AnimeRepository {
 
     public void searchNextPage() {
         Log.d(TAG, "searchNextPage: " + mQuery +" "+ mPageLimit +" "+ mPageOffset);
-        searchAnimeListApi(mQuery, mPageLimit, mPageOffset +20);
+        searchAnimeListApi(mQuery, mPageLimit, mPageOffset + 20, false);
     }
 
     public void cancelRequest() {

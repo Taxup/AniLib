@@ -54,11 +54,11 @@ public class AnimeApiClient {
         return mGenresRequestTimeout;
     }
 
-    public void searchAnimeListApi(String text, int pageLimit, int pageOffset) {
+    public void searchAnimeListApi(String text, int pageLimit, int pageOffset, boolean isNewSearch) {
         if (mRetrieveAnimeListRunnable != null) {
             mRetrieveAnimeListRunnable = null;
         }
-        mRetrieveAnimeListRunnable = new RetrieveAnimeListRunnable(text, pageLimit, pageOffset);
+        mRetrieveAnimeListRunnable = new RetrieveAnimeListRunnable(text, pageLimit, pageOffset, isNewSearch);
 
         final Future handler = AppExecutors.getInstance().networkIO().submit(mRetrieveAnimeListRunnable);
 
@@ -92,12 +92,14 @@ public class AnimeApiClient {
         private final String text;
         private final int pageLimit;
         private final int pageOffset;
+        private final boolean isNewSearch;
         private boolean cancelRequest;
 
-        public RetrieveAnimeListRunnable(String text, int pageLimit, int pageOffset) {
+        public RetrieveAnimeListRunnable(String text, int pageLimit, int pageOffset, boolean isNewSearch) {
             this.text = text;
             this.pageLimit = pageLimit;
             this.pageOffset = pageOffset;
+            this.isNewSearch = isNewSearch;
             cancelRequest = false;
         }
 
@@ -115,8 +117,11 @@ public class AnimeApiClient {
                         mAnimeList.postValue(list);
                     } else {
                         List<Anime> currentList = mAnimeList.getValue();
+                        assert currentList != null;
+                        currentList.addAll(list);
                         mAnimeList.postValue(currentList);
                     }
+                    if (isNewSearch) mAnimeList.postValue(null);
                 } else {
                     assert response.errorBody() != null;
                     String error = response.errorBody().string();

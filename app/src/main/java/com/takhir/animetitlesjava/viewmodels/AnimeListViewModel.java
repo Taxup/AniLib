@@ -34,7 +34,7 @@ public class AnimeListViewModel extends ViewModel {
     }
 
     public void searchAnimeListApi(String text, int pageLimit, int pageOffset) {
-        mAnimeRepository.searchAnimeListApi(text, pageLimit, pageOffset);
+        mAnimeRepository.searchAnimeListApi(text, pageLimit, pageOffset, true);
     }
 
     public boolean onBackPressed() {
